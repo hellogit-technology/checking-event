@@ -6,9 +6,9 @@
   "scripts": {
     "minify": "rimraf ./public/js & rimraf ./public/css & rimraf ./public/img && gulp bundle-files",
     "minify:watch": "gulp watch-files",
-    "dev": "ts-node-env src/server.ts",
-    "build": "rimraf ./dist && tsc",
-    "start": "rimraf ./dist & npm run minify && tsc && node dist/server.js",
+    "dev": "cross-env NODE_ENV=development ts-node-dev src/server.ts",
+    "build": "cross-env NODE_ENV=development rimraf ./dist && tsc",
+    "start": "cross-env NODE_ENV=production rimraf ./dist & npm run minify && tsc && node dist/server.js",
     "check": "prettier --check \"src/**/*.ts\" ",
     "format": "prettier --write \"src/**/*.ts\" "
   },
