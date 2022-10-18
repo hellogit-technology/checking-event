@@ -1,0 +1,12 @@
+node_modules
+dist
+assets
+tsconfig.json
+.prettierrc
+.env.example
+.env
+.vscode
+.gitignore
+README.md 
+gulpfile.js
+yarn.lock
