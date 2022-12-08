@@ -1,24 +1,42 @@
 import { NextFunction, Request, Response } from 'express';
 import path from 'path'
-import * as controllers from '../../constant/controllers';
 import {injectFile} from '../../utils/inject'
 import {Event} from '../models'
 
-// Add files to layout
-const forWebpackDir = {
+interface Path {
+  css: string,
+  js: string,
+  lib: string
+}
+
+interface File {
+  cssFile: string,
+  jsFile: string,
+  libFile: string
+}
+
+const environment: string = process.env.NODE_ENV!
+const forWebpackDir: Path = {
   css: path.join(__dirname, '../public/css'),
-  js: path.join(__dirname, '../public/js')
-};
-const defaultDir = {
+  js: path.join(__dirname, '../public/js'),
+  lib: path.join(__dirname, '../public/lib')
+}
+
+const defaultDir: Path = {
   css: path.join(__dirname, '../../../public/css'),
-  js: path.join(__dirname, '../../../public/js')
-};
-const files = {
-  cssFile: injectFile(controllers.Configuration.deployment === true ? forWebpackDir.css : defaultDir.css, 'style'),
-  // jsFile: injectFile(controllers.Configuration.deployment === true ? forWebpackDir.js : defaultDir.js, 'global'),
+  js: path.join(__dirname, '../../../public/js'),
+  lib: path.join(__dirname, '../../../public/lib')
+}
+
+const files: File = {
+  cssFile: injectFile(environment === 'development' ?  defaultDir.css : forWebpackDir.css, 'style'),
+  jsFile: injectFile(environment === 'development' ? defaultDir.js : forWebpackDir.js, 'scripts'),
+  libFile: injectFile(environment === 'development' ? defaultDir.lib : forWebpackDir.lib, 'confetti')
 };
 
+
 class SiteControllers {
+
   // [GET] /:id/:slug
   async index(req: Request, res: Response, next: NextFunction) {
     try {
@@ -27,17 +45,18 @@ class SiteControllers {
 
       // Event not exist
       if(!event) {
-        return res.status(200).json('Event not found!')
+        return res.status(200).render('exist')
       }
 
       // Event expire
       if(event['expire'] === true) {
-        return res.status(200).json('Event expired')
+        const eventName = event['name']
+        return res.status(200).render('expire', {eventName})
       }
 
       const themeCheckingPage = event['poster']
-      req.session.eventIdParam = eventId
-      res.status(200).render('index', {files});
+      req.session.eventURL = req.path
+      res.status(200).render('index', {files, themeCheckingPage})
     } catch (error) {
       console.log(error)
     }
@@ -47,6 +66,17 @@ class SiteControllers {
   errorRender(req: Request, res: Response, next: NextFunction) {
     res.status(404).render('404');
   }
+
+  // [GET] /failed
+  failed(req: Request, res: Response, next: NextFunction) {
+    try {
+      res.status(200).render('failed')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
 }
 
 export default new SiteControllers();

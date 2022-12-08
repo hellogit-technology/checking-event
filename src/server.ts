@@ -8,6 +8,7 @@ import minifyHTML from 'express-minify-html-terser';
 import passport from 'passport';
 import fs from 'fs-extra'
 import {googlePassport} from './config/passport'
+import {redirectHTTPS} from './middleware/forceHTTPS'
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -18,7 +19,10 @@ declare module 'express-session' {
     fullname: string
     email: string
     schoolId: string
+    eventURL: string
     eventIdParam: string | null | undefined
+    studentName: string | null | undefined
+    eventName: string | null | undefined
   }
 }
 
@@ -42,6 +46,9 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// Force using https (only for deployment)
+app.use(redirectHTTPS);
+
 // Caching disabled for every route
 app.use(clearCache);
 
@@ -55,6 +62,9 @@ app.use(
   })
 );
 
+// Use proxy for express server
+app.set('trust proxy', true);
+
 // Session
 app.use(
   session({
@@ -62,9 +72,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === 'production' ? true : false,
+      secure: true,
       maxAge: 60000 * 60, //? Session expire in 1 hours
-      httpOnly: process.env.NODE_ENV === 'production' ? true : false
+      httpOnly: true,
+      sameSite: 'lax'
     },
     store: sessionStore
   })

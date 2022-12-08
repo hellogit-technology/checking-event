@@ -14,6 +14,7 @@ const idCSS = randomstring.generate({
     length: 15
 })
 
+// Minify js files
 gulp.task('scripts', () => {
     return gulp
         .src('assets/js/*.js')
@@ -26,6 +27,7 @@ gulp.task('scripts', () => {
         .pipe(gulp.dest('public/js'))
 })
 
+// Minify css files
 gulp.task('style', () => {
     return gulp
         .src('assets/css/*.css')
@@ -34,6 +36,7 @@ gulp.task('style', () => {
         .pipe(gulp.dest('public/css'))
 })
 
+// Optimize images
 gulp.task('images', () => {
     return gulp
         .src('assets/img/*')
@@ -41,7 +44,20 @@ gulp.task('images', () => {
         .pipe(gulp.dest('public/img'))
 })
 
-gulp.task('minify-files', gulp.parallel('scripts', 'style', 'images')) 
+// Move all library to public file
+gulp.task('move-library', () => {
+    return gulp
+        .src('assets/lib/*.js')
+        .pipe(strip())
+        .pipe(concat(`confetti.bundle.js`))
+        .pipe(terser({
+            compress: true,
+            mangle: true
+        }))
+        .pipe(gulp.dest('public/lib'))
+})
+
+gulp.task('minify-files', gulp.parallel('scripts', 'style', 'images', 'move-library')) 
 
 gulp.task('watch-files', () => {
     gulp.watch('assets/js/*.js', gulp.series('scripts'))

@@ -2,6 +2,7 @@ import { Strategy } from 'passport-google-oauth20';
 import { PassportStatic } from 'passport';
 import { Student } from '../app/models';
 import { messageVietnamese } from '../utils/message';
+import { UserSession} from '../types'
 
 const GoogleStrategy = Strategy;
 
@@ -10,7 +11,7 @@ export const googlePassport = (passport: PassportStatic) => {
     done(null, user);
   });
 
-  passport.deserializeUser<any>((user, done) => {
+  passport.deserializeUser<UserSession>((user, done) => {
     done(null, user);
   });
 

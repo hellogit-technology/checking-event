@@ -11,7 +11,7 @@
     "start": "npm run minify && cross-env NODE_ENV=production ts-node src/server.ts",
     "check": "prettier --check \"src/**/*.ts\" ",
     "format": "prettier --write \"src/**/*.ts\" ",
-    "deploy": "npm run minify && npm run build && rimraf ./deploy && webpack",
+    "deploy": "npm run minify && npm run build && rimraf ./deploy && webpack && rimraf ./dist",
     "image": "docker build -t web-mentor-image . ",
     "test": "docker run -p 8080:8080 --name web-mentor web-mentor-image"
   },
@@ -73,6 +73,7 @@
     "gulp-imagemin": "7.1.0",
     "gulp-strip-comments": "^2.5.2",
     "gulp-terser": "^2.1.0",
+    "kill-port": "^2.0.1",
     "prettier": "^2.7.1",
     "randomstring": "^1.2.2",
     "rimraf": "^3.0.2",
