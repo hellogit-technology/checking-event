@@ -20,30 +20,18 @@ interface File {
     libFile: string
 }
 
-const environment: string = process.env.NODE_ENV!
-const dirOptions: { deployment: string, testing: string } = {
-    deployment: path.join(__dirname, '../template/event.ejs'),
-    testing: path.join(__dirname, '../../../template/event.ejs')
-}
+const templateMailDir = path.join(__dirname, '../../../template/event.ejs')
 
-const templateMailDir = environment === 'development' ? dirOptions.testing : dirOptions.deployment
-
-const forWebpackDir: Path = {
-    css: path.join(__dirname, '../public/css'),
-    js: path.join(__dirname, '../public/js'),
-    lib: path.join(__dirname, '../public/lib')
-}
-
-const defaultDir: Path = {
+const assetsDir: Path = {
     css: path.join(__dirname, '../../../public/css'),
     js: path.join(__dirname, '../../../public/js'),
     lib: path.join(__dirname, '../../../public/lib')
 }
 
 const files: File = {
-    cssFile: injectFile(environment === 'development' ?  defaultDir.css : forWebpackDir.css, 'style'),
-    jsFile: injectFile(environment === 'development' ? defaultDir.js : forWebpackDir.js, 'scripts'),
-    libFile: injectFile(environment === 'development' ? defaultDir.lib : forWebpackDir.lib, 'confetti')
+    cssFile: injectFile(assetsDir.css, 'style'),
+    jsFile: injectFile(assetsDir.js, 'scripts'),
+    libFile: injectFile(assetsDir.lib, 'confetti')
 };
 
 class CheckingControllers {
