@@ -2,7 +2,7 @@
   "name": "checking-event",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
     "minify": "rimraf ./public && gulp minify-files",
     "minify:watch": "gulp watch-files",
@@ -28,6 +28,7 @@
   "homepage": "https://github.com/hellogit-technology/frontend-mentor#readme",
   "dependencies": {
     "compression": "^1.7.4",
+    "connect-flash": "^0.1.1",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@types/compression": "^1.7.2",
+    "@types/connect-flash": "^0.0.37",
     "@types/ejs": "^3.1.1",
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
@@ -62,7 +64,7 @@
     "@types/node": "^18.0.0",
     "@types/nodemailer": "^6.4.4",
     "@types/nodemailer-express-handlebars": "^4.0.2",
-    "@types/passport": "^1.0.9",
+    "@types/passport": "^1.0.11",
     "@types/passport-google-oauth20": "^2.0.11",
     "@types/serve-favicon": "^2.5.3",
     "@types/uuid": "^8.3.4",

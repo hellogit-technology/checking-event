@@ -1,15 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import {UserSession} from '../types'
 
-export const isLogged = (req: Request, res: Response, next: NextFunction) => {
-  const pathName = req.session.eventURL
-  if (!req.user) {
-    return res.redirect(`/${pathName}`);
+export const requiredAuth = (req: Request, res: Response, next: NextFunction) => {
+  if (req.isAuthenticated()) {
+    return next();
   }
 
-  const userSession: UserSession = req.user;
-  if (userSession['isLogged'] !== true) {
-    return res.redirect(`/${pathName}`);
-  }
-  return next();
+  req.session.redirectUrl = req.originalUrl;
+  return res.redirect('/attendance');
 };

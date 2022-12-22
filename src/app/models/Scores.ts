@@ -1,4 +1,3 @@
-import { Timestamp } from 'mongodb';
 import { Schema, model } from 'mongoose';
 
 const ScoresSchema = new Schema(
@@ -15,9 +14,9 @@ const ScoresSchema = new Schema(
         club: { type: Schema.Types.ObjectId, ref: 'Club' }
       }
     ],
-    totalEvent: { type: Number, max: 3 },
-    totalAttitude: { type: Number, max: 3 },
-    month: { type: Number, max: 2, required: true },
+    totalEvent: { type: Number, max: 1000 },
+    totalAttitude: { type: Number, max: 1000 },
+    month: { type: Number, max: 12, required: true },
     student: { type: Schema.Types.ObjectId, required: true, ref: 'Student' },
     system: { type: Date },
     editor: {

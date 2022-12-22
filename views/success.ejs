@@ -13,19 +13,27 @@
     <title>Sự kiện | Greenwich</title>
 </head>                                                                                                                                                                                                                                            
 <body                                           
-  <% if (typeof(themeCheckingPage) !== 'undefined') { %>
-    style="background: url('<%= themeCheckingPage %>') no-repeat center fixed; background-size: cover;"
+  <% if (typeof(themePage) !== 'undefined') { %>
+    style="background: url('<%= themePage.photo %>') no-repeat center fixed; background-size: cover;"
   <% } else { %> 
     style="background: url('/img/university.jpg') no-repeat center fixed; background-size: cover;"
   <% } %> 
   >
   <div id="overlay">
-    <p class="heading-center">
+    <% if (typeof(showInfo) !== 'undefined' && showInfo === 'already') { %>
+      <p class="heading-center">
+        Bạn đã đăng ký tham gia sự kiện.
+      </p>
+    <% } %>
+    <% if (typeof(showInfo) !== 'undefined' && showInfo === 'new') { %>
+      <p class="heading-center">
         Cảm ơn bạn 
         <br> <b><%= studentName %></b> 
         <br> đã tham gia sự kiện. 
         <br> <small style="color: orange">Thank you for joining.</small> 
-    </p>
+      </p>
+    <% } %>
+    
   </div>
   <script src="/lib/<%= files['libFile'] %>"></script>
   <script src="/js/<%= files['jsFile'] %>"></script>

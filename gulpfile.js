@@ -63,4 +63,5 @@ gulp.task('watch-files', () => {
     gulp.watch('assets/js/*.js', gulp.series('scripts'))
     gulp.watch('assets/css/*.css', gulp.series('style'))
     gulp.watch('assets/img/*', gulp.series('images'))
+    gulp.watch('assets/lib/*.js', gulp.series('move-library'))
 })

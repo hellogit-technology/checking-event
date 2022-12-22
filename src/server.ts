@@ -4,25 +4,22 @@ import helmet from 'helmet';
 import session from 'express-session';
 import compression from 'compression';
 import path from 'path';
+import flash from 'connect-flash'
 import minifyHTML from 'express-minify-html-terser';
 import passport from 'passport';
-import fs from 'fs-extra'
-import {googlePassport} from './config/passport'
-import {redirectHTTPS} from './middleware/forceHTTPS'
+import fs from 'fs-extra';
+import { googlePassport } from './config/passport';
+import { redirectHTTPS } from './middleware/forceHTTPS';
 import dotenv from 'dotenv';
 dotenv.config();
 
 declare module 'express-session' {
   interface SessionData {
-    isLogged: boolean;
-    studentId: string;
-    fullname: string
-    email: string
-    schoolId: string
-    eventURL: string
-    eventIdParam: string | null | undefined
-    studentName: string | null | undefined
-    eventName: string | null | undefined
+    eventName: string;
+    studentName: string;
+    showInfo: string;
+    poster: string
+    redirectUrl: string | null;
   }
 }
 
@@ -45,6 +42,7 @@ const port = process.env.PORT || 8080;
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
 
 // Force using https (only for deployment)
 app.use(redirectHTTPS);
@@ -123,12 +121,15 @@ app.use(
   })
 );
 
-// Passport Middleware
-app.use(passport.initialize());
-app.use(passport.session());
+// Flash
+app.use(flash());
 
 // Passport
 googlePassport(passport);
+
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Route Init
 route(app);

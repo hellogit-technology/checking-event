@@ -1,8 +1,7 @@
-import express, { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, Router } from 'express';
 import passport from 'passport';
-import { isLogged } from '../middleware/auth';
 
-const router = express.Router();
+const router = Router();
 
 router.get(
   '/google',
@@ -11,8 +10,9 @@ router.get(
   })
 );
 
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed', failureFlash: true }), (req: Request, res: Response, next: NextFunction) => {
-  return res.redirect('/checking/record');
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/failed', failureFlash: true, keepSessionInfo: true }), (req: Request, res: Response, next: NextFunction) => {
+  const redirectUrl = req.session.redirectUrl as string
+  res.redirect(redirectUrl)
 });
 
 export default router;
